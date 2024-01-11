@@ -37,12 +37,35 @@
   <div class="navbar-brand">
     <a class="nav-link" href="#" id="nav-all">Hack or Snooze</a>
   </div>
+  <div class="main-nav-links hidden">
+    |
+    <a class="nav-link" href="#" id="nav-submit">submit</a>
+  </div>
   <div class="nav-right">
     <a class="nav-link" href="#" id="nav-login">login/signup</a>
     <a class="nav-link" href="#" id="nav-user-profile"></a>
     <a class="hidden" id="nav-logout" href="#"><small>(logout)</small></a>
   </div>
 </nav>
+
+<!-- Submit new story form -->
+<section class="submit-form-container container">
+  <form action="#" id="submit-form" class="hidden" method="post">
+    <div class="submit-story-input">
+      <label for="submit-story-author">author</label>
+      <input id="submit-story-author" type="text" placeholder="author name" />
+    </div>
+    <div class="submit-story-input">
+      <label for="submit-story-title">title</label>
+      <input id="submit-story-title" type="text" placeholder="story title" />
+    </div>
+    <div class="submit-story-input">
+      <label for="submit-story-url">url</label>
+      <input id="submit-story-url" type="text" placeholder="story url" />
+    </div>
+    <button type="submit">submit story</button>
+  </form>
+</section>
 
 <!-- Login and signup forms -->
 <section class="account-forms-container container">

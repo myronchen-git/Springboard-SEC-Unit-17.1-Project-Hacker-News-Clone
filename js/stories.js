@@ -50,3 +50,26 @@ function putStoriesOnPage() {
 
   $allStoriesList.show();
 }
+
+/** Takes the input values for a new story, submits it to the API, generate the HTML, and add it to the story list. */
+
+async function submitStory(evt) {
+  console.debug("submitStory", evt);
+  evt.preventDefault();
+
+  // grab the author, title, and url
+  const author = $("#submit-story-author").val();
+  const title = $("#submit-story-title").val();
+  const url = $("#submit-story-url").val();
+
+  // StoryList.addStory uses API to add a new story and returns a Story instance
+  const newStory = await storyList.addStory(currentUser, { author, title, url });
+
+  $submitForm.hide();
+
+  // generate HTML for the new story and add it to the list of stories
+  const $story = generateStoryMarkup(newStory);
+  $allStoriesList.prepend($story);
+}
+
+$submitForm.submit(submitStory);
