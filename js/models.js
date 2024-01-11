@@ -203,4 +203,49 @@ class User {
       return null;
     }
   }
+
+  /**
+   * Adds the specified story to the current user's favorites list.
+   *
+   * @param {String} storyId The ID of an existing story
+   */
+
+  async addFavorite(storyId) {
+    this.#favoriteHelper(storyId, "add");
+  }
+
+  /**
+   * Removes the specified story from the current user's favorites list.
+   *
+   * @param {String} storyId
+   */
+
+  async removeFavorite(storyId) {
+    this.#favoriteHelper(storyId, "remove");
+  }
+
+  /**
+   * The core logic for adding or removing a story from the current user's favorites.  This contacts the API and
+   * updates the local array of favorites.
+   *
+   * @param {String} storyId The ID of an existing story
+   * @param {String} action Either "add" or "remove"
+   */
+  async #favoriteHelper(storyId, action) {
+    let httpMethod;
+    if (action == "add") {
+      httpMethod = "POST";
+    } else if (action == "remove") {
+      httpMethod = "DELETE";
+    }
+
+    const response = await axios({
+      baseURL: BASE_URL,
+      url: `/users/${this.username}/favorites/${storyId}`,
+      method: httpMethod,
+      data: { token: this.loginToken },
+    });
+
+    this.favorites = response.data.user.favorites.map(s => new Story(s));
+  }
 }

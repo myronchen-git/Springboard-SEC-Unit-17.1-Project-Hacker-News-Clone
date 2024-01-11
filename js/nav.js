@@ -9,7 +9,7 @@
 function navAllStories(evt) {
   console.debug("navAllStories", evt);
   hidePageComponents();
-  putStoriesOnPage();
+  putStoriesOnPage(storyList.stories, $allStoriesList);
 }
 
 $body.on("click", "#nav-all", navAllStories);
@@ -21,6 +21,16 @@ function navSubmitStory(evt) {
 }
 
 $navSubmit.on("click", navSubmitStory);
+
+/** Show favorite stories after clicking on "favorites" */
+function navFavorites(evt) {
+  console.debug("navFavorites", evt);
+  hidePageComponents();
+  putStoriesOnPage(currentUser.favorites, $favoriteStoriesList);
+  $favoriteStoriesList.show();
+}
+
+$navFavorites.on("click", navFavorites);
 
 /** Show login/signup on click on "login" */
 

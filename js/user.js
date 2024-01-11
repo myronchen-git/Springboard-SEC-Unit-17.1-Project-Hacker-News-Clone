@@ -114,3 +114,26 @@ function updateUIOnUserLogin() {
 
   updateUiOnLogin();
 }
+
+/******************************************************************************
+ * Favoriting, deleting own stories, etc.
+ */
+
+/** Handles the adding and removing of a story to and from the current user's favorites. */
+async function toggleFavorite(evt) {
+  console.debug("toggleFavorite", evt);
+
+  const target = evt.currentTarget;
+  const storyId = target.parentElement.id;
+
+  if (target.classList.contains("fa-regular")) {
+    currentUser.addFavorite(storyId);
+    target.classList.replace("fa-regular", "fa-solid");
+
+  } else if (target.classList.contains("fa-solid")) {
+    currentUser.removeFavorite(storyId);
+    target.classList.replace("fa-solid", "fa-regular");
+  }
+}
+
+$(".stories-list").on("click", ".fa-star", toggleFavorite)

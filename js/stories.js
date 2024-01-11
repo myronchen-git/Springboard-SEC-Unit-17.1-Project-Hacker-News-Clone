@@ -9,7 +9,7 @@ async function getAndShowStoriesOnStart() {
   storyList = await StoryList.getStories();
   $storiesLoadingMsg.remove();
 
-  putStoriesOnPage();
+  putStoriesOnPage(storyList.stories, $allStoriesList);
 }
 
 /**
@@ -22,33 +22,51 @@ async function getAndShowStoriesOnStart() {
 function generateStoryMarkup(story) {
   // console.debug("generateStoryMarkup", story);
 
+  let starIcon;
+
+  if (currentUser) {
+    starIcon = currentUser.favorites.some(
+      favoriteStory => favoriteStory.storyId === story.storyId
+    ) ? "<i class='fa-solid fa-star'></i>"
+      : "<i class='fa-regular fa-star'></i>";
+  }
+
   const hostName = story.getHostName();
-  return $(`
-      <li id="${story.storyId}">
-        <a href="${story.url}" target="a_blank" class="story-link">
-          ${story.title}
-        </a>
-        <small class="story-hostname">(${hostName})</small>
-        <small class="story-author">by ${story.author}</small>
-        <small class="story-user">posted by ${story.username}</small>
-      </li>
-    `);
+
+  const htmlElements = $(`
+    <li id="${story.storyId}">
+      <a href="${story.url}" target="a_blank" class="story-link">
+        ${story.title}
+      </a>
+      <small class="story-hostname">(${hostName})</small>
+      <small class="story-author">by ${story.author}</small>
+      <small class="story-user">posted by ${story.username}</small>
+    </li>
+  `);
+
+  if (starIcon) {htmlElements.prepend(starIcon);}
+
+  return htmlElements;
 }
 
 /** Gets list of stories from server, generates their HTML, and puts on page. */
 
-function putStoriesOnPage() {
-  console.debug("putStoriesOnPage");
+function putStoriesOnPage(stories, list) {
+  console.debug("putStoriesOnPage", stories, list);
 
-  $allStoriesList.empty();
+  list.empty();
 
-  // loop through all of our stories and generate HTML for them
-  for (let story of storyList.stories) {
-    const $story = generateStoryMarkup(story);
-    $allStoriesList.append($story);
+  if (stories.length === 0) {
+    list.append("No stories available!");
+  } else {
+    // loop through all of our stories and generate HTML for them
+    for (let story of stories) {
+      const $story = generateStoryMarkup(story);
+      list.append($story);
+    }
   }
 
-  $allStoriesList.show();
+  list.show();
 }
 
 /** Takes the input values for a new story, submits it to the API, generate the HTML, and add it to the story list. */
