@@ -112,5 +112,5 @@ function updateUIOnUserLogin() {
 
   $allStoriesList.show();
 
-  updateNavOnLogin();
+  updateUiOnLogin();
 }

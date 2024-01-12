@@ -25,12 +25,15 @@ function navLoginClick(evt) {
 
 $navLogin.on("click", navLoginClick);
 
-/** When a user first logins in, update the navbar to reflect that. */
+/** When a user first logins in, update the UI to reflect that. */
 
-function updateNavOnLogin() {
-  console.debug("updateNavOnLogin");
+function updateUiOnLogin() {
+  console.debug("updateUiOnLogin");
+
   $(".main-nav-links").show();
   $navLogin.hide();
   $navLogOut.show();
   $navUserProfile.text(`${currentUser.username}`).show();
+
+  navAllStories();
 }
