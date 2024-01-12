@@ -27,6 +27,38 @@ class Story {
     // UNIMPLEMENTED: complete this function!
     return "hostname.com";
   }
+
+  /**
+   * Deletes a story from the database, using the API, and from local data in local arrays.  The story has to be deleted
+   * locally, because stories are not fetched unless the webpage is reloaded.
+   *
+   * @param {String} storyId The ID of a story
+   */
+
+  static async deleteStory(storyId) {
+
+    // API call to delete story in database
+    const response = await axios({
+      baseURL: BASE_URL,
+      url: `/stories/${storyId}`,
+      method: "DELETE",
+      data: { token: currentUser.loginToken },
+    });
+
+    // Delete the story locally
+    deleteStoryFromLocal(currentUser.ownStories);
+    deleteStoryFromLocal(currentUser.favorites);
+    deleteStoryFromLocal(storyList.stories);
+
+    function deleteStoryFromLocal(stories) {
+      for (let i = 0; i < stories.length; i++) {
+        if (stories[i].storyId === storyId) {
+          stories.splice(i, 1);
+          break;
+        }
+      }
+    }
+  }
 }
 
 

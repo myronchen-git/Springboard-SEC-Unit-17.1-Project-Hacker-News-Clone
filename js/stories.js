@@ -23,12 +23,18 @@ function generateStoryMarkup(story) {
   // console.debug("generateStoryMarkup", story);
 
   let starIcon;
+  let trashIcon;
 
   if (currentUser) {
     starIcon = currentUser.favorites.some(
       favoriteStory => favoriteStory.storyId === story.storyId
     ) ? "<i class='fa-solid fa-star'></i>"
       : "<i class='fa-regular fa-star'></i>";
+
+    trashIcon = currentUser.ownStories.some(
+      ownStory => ownStory.storyId === story.storyId
+    ) ? "<i class='fa-solid fa-trash-can'></i>"
+      : "";
   }
 
   const hostName = story.getHostName();
@@ -45,6 +51,7 @@ function generateStoryMarkup(story) {
   `);
 
   if (starIcon) {htmlElements.prepend(starIcon);}
+  if (trashIcon) {htmlElements.prepend(trashIcon);}
 
   return htmlElements;
 }
@@ -91,3 +98,18 @@ async function submitStory(evt) {
 }
 
 $submitForm.submit(submitStory);
+
+/** Deletes the related story from the webpage, and the database through the API. */
+
+async function deleteStory(evt) {
+  console.debug("deleteStory", evt);
+
+  const target = evt.currentTarget;
+  const storyId = target.parentElement.id;
+
+  await Story.deleteStory(storyId);
+
+  target.parentElement.remove();
+}
+
+$storiesList.on("click", ".fa-trash-can", deleteStory);
