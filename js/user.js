@@ -17,9 +17,15 @@ async function login(evt) {
   const username = $("#login-username").val();
   const password = $("#login-password").val();
 
+  try {
   // User.login retrieves user info from API and returns User instance
   // which we'll make the globally-available, logged-in user.
   currentUser = await User.login(username, password);
+
+  } catch (error) {
+    displayAPIError(error);
+    return;
+  }
 
   $loginForm.trigger("reset");
 
@@ -39,9 +45,15 @@ async function signup(evt) {
   const username = $("#signup-username").val();
   const password = $("#signup-password").val();
 
+  try {
   // User.signup retrieves user info from API and returns User instance
   // which we'll make the globally-available, logged-in user.
   currentUser = await User.signup(username, password, name);
+
+  } catch (error) {
+    displayAPIError(error);
+    return;
+  }
 
   saveUserCredentialsInLocalStorage();
   updateUIOnUserLogin();
@@ -63,6 +75,19 @@ function logout(evt) {
 }
 
 $navLogOut.on("click", logout);
+
+/** Helps display the error in the API response. */
+
+function displayAPIError(error) {
+  if (error.response) {
+    const errorObject = error.response.data.error;
+    alert(`status: ${errorObject.status}\n${errorObject.title}\n${errorObject.message}`);
+  } else if (error.request) {
+    alert("Did not receive a response from the server.");
+  } else {
+    alert("Error occurred while setting up request.");
+  }
+}
 
 /******************************************************************************
  * Storing/recalling previously-logged-in-user with localStorage
