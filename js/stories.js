@@ -61,6 +61,7 @@ function generateStoryMarkup(story) {
 function putStoriesOnPage(stories, list) {
   console.debug("putStoriesOnPage", stories, list);
 
+  $storiesList.hide();
   list.empty();
 
   if (stories.length === 0) {
