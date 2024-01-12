@@ -21,6 +21,9 @@ const $submitForm = $("#submit-form");
 const $navFavorites = $("#nav-favorites");
 const $favoriteStoriesList = $("#favorite-stories-list");
 
+const $navOwnStories = $("#nav-own-stories");
+const $ownStoriesList = $("#own-stories-list");
+
 /** To make it easier for individual components to show just themselves, this
  * is a useful function that hides pretty much everything on the page. After
  * calling this, individual components can re-show just what they want.

@@ -32,6 +32,16 @@ function navFavorites(evt) {
 
 $navFavorites.on("click", navFavorites);
 
+/** Show the current user's own stories after clicking on "my stories" */
+function navOwnStories(evt) {
+  console.debug("navOwnStories", evt);
+  hidePageComponents();
+  putStoriesOnPage(currentUser.ownStories, $ownStoriesList);
+  $ownStoriesList.show();
+}
+
+$navOwnStories.on("click", navOwnStories);
+
 /** Show login/signup on click on "login" */
 
 function navLoginClick(evt) {
