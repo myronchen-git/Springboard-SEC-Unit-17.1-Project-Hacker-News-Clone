@@ -41,17 +41,24 @@ function generateStoryMarkup(story) {
 
   const htmlElements = $(`
     <li id="${story.storyId}">
-      <a href="${story.url}" target="a_blank" class="story-link">
-        ${story.title}
-      </a>
-      <small class="story-hostname">(${hostName})</small>
-      <small class="story-author">by ${story.author}</small>
-      <small class="story-user">posted by ${story.username}</small>
+      <div class="story-icons">
+      </div>
+      <div class="story-text">
+        <div>
+          <a href="${story.url}" target="a_blank" class="story-link">
+            ${story.title}
+          </a>
+          <small class="story-hostname">(${hostName})</small>
+        </div>
+        <small class="story-author">by ${story.author}</small>
+        <small class="story-user">posted by ${story.username}</small>
+      </div>
+      <hr />
     </li>
   `);
 
-  if (starIcon) {htmlElements.prepend(starIcon);}
-  if (trashIcon) {htmlElements.prepend(trashIcon);}
+  if (starIcon) {htmlElements.children(".story-icons").append(starIcon);}
+  if (trashIcon) {htmlElements.children(".story-icons").append(trashIcon);}
 
   return htmlElements;
 }

@@ -10,6 +10,27 @@
   margin: 0.75rem 0;
 }
 
+.stories-list > li > div {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.stories-list hr {
+  margin-right: 3rem;
+  color: lightgrey;
+}
+
+.story-icons > *, .story-text > * {
+  margin-bottom: 0.25rem;
+}
+
+.story-icons i {
+  display: block;
+  padding: 0.1rem;
+  text-align: center;
+  cursor: pointer;
+}
+
 #stories-loading-msg {
   font-weight: bold;
   font-size: 150%;
@@ -22,7 +43,7 @@
 .story-link {
   color: black;
   font-size: 0.95rem;
-  font-weight: normal;
+  font-weight: bold;
 }
 
 .story-link:hover {
@@ -30,9 +51,11 @@
 }
 
 .story-author {
-  margin-left: 2em;
+  display: block;
+  color: green;
 }
 
 .story-user {
   display: block;
+  color: orange;
 }

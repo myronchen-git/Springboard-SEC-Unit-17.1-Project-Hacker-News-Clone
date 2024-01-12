@@ -3,6 +3,8 @@
 body {
   font-family: Arimo, sans-serif;
   margin: 0.5rem 7.5vw;
+  background-color: #9DB9E6;
+  box-shadow: 0 0 9rem 7.5rem rgba(206, 144, 115, 0.3);
 }
 
 h1 {
