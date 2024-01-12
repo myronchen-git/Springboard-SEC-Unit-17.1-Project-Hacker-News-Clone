@@ -116,7 +116,7 @@ function updateUIOnUserLogin() {
 }
 
 /******************************************************************************
- * Favoriting, deleting own stories, etc.
+ * Favoriting and etc.
  */
 
 /** Handles the adding and removing of a story to and from the current user's favorites. */
