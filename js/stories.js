@@ -106,11 +106,11 @@ async function deleteStory(evt) {
   console.debug("deleteStory", evt);
 
   const target = evt.currentTarget;
-  const storyId = target.parentElement.id;
+  const storyId = target.closest("li").id;
 
   await Story.deleteStory(storyId);
 
-  target.parentElement.remove();
+  target.closest("li").remove();
 }
 
 $storiesList.on("click", ".fa-trash-can", deleteStory);

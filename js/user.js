@@ -124,7 +124,7 @@ async function toggleFavorite(evt) {
   console.debug("toggleFavorite", evt);
 
   const target = evt.currentTarget;
-  const storyId = target.parentElement.id;
+  const storyId = target.closest("li").id;
 
   if (target.classList.contains("fa-regular")) {
     currentUser.addFavorite(storyId);
