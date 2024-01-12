@@ -1,19 +1,19 @@
 /* Lists of stories */
 
 .stories-list {
-  margin: 20px 5px;
+  margin: 1.25rem 0.25rem;
 }
 
 .stories-list > li {
   color: gray;
-  font-size: 0.8rem;
-  margin: 10px 0;
+  font-size: 0.9rem;
+  margin: 0.75rem 0;
 }
 
 #stories-loading-msg {
   font-weight: bold;
   font-size: 150%;
-  margin: 20px 30px;
+  margin: 1.25rem 1.75rem;
 }
 
 
@@ -21,9 +21,8 @@
 
 .story-link {
   color: black;
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   font-weight: normal;
-  margin: 18px 0;
 }
 
 .story-link:hover {
