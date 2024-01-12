@@ -136,4 +136,4 @@ async function toggleFavorite(evt) {
   }
 }
 
-$(".stories-list").on("click", ".fa-star", toggleFavorite)
+$storiesList.on("click", ".fa-star", toggleFavorite)
