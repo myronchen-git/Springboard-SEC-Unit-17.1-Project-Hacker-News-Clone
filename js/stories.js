@@ -24,6 +24,7 @@ function generateStoryMarkup(story) {
 
   let starIcon;
   let trashIcon;
+  let pencilIcon;
 
   if (currentUser) {
     starIcon = currentUser.favorites.some(
@@ -31,10 +32,13 @@ function generateStoryMarkup(story) {
     ) ? "<i class='fa-solid fa-star'></i>"
       : "<i class='fa-regular fa-star'></i>";
 
-    trashIcon = currentUser.ownStories.some(
-      ownStory => ownStory.storyId === story.storyId
-    ) ? "<i class='fa-solid fa-trash-can'></i>"
-      : "";
+    for (let ownStory of currentUser.ownStories) {
+      if (ownStory.storyId === story.storyId) {
+        trashIcon = "<i class='fa-solid fa-trash-can'></i>";
+        pencilIcon = "<i class='fa-solid fa-pencil'></i>";
+        break;
+      }
+    }
   }
 
   const hostName = story.getHostName();
@@ -57,8 +61,11 @@ function generateStoryMarkup(story) {
     </li>
   `);
 
-  if (starIcon) {htmlElements.children(".story-icons").append(starIcon);}
-  if (trashIcon) {htmlElements.children(".story-icons").append(trashIcon);}
+  for (let icon of [starIcon, trashIcon, pencilIcon]) {
+    if (icon) {
+      htmlElements.children(".story-icons").append(icon);
+    }
+  }
 
   return htmlElements;
 }
