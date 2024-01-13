@@ -58,6 +58,45 @@ class Story {
       }
     }
   }
+
+  /**
+   * Updates an existing story in the database by using the API, this instance's properties, and equivalent instances
+   * in the local favorites and all-stories arrays.  This story in the own-stories array is already updated.
+   *
+   * @param {User} user The current user and owner of the story
+   * @param {Object} editedStory Object containing the new author, title, and url of the story to edit
+   */
+
+  async updateStory(user, editedStory) {
+    this.author = editedStory.author;
+    this.title = editedStory.title;
+    this.url = editedStory.url;
+
+    const response = await axios({
+      baseURL: BASE_URL,
+      url: `/stories/${this.storyId}`,
+      method: "PATCH",
+      data: { token: user.loginToken, story: editedStory },
+    });
+
+    // Updating this story's properties using returned story object from the API, in case data has changed since before
+    // running this updateStory method.
+    ({title: this.title,
+      author: this.author,
+      url: this.url,
+      username: this.username,
+      createdAt: this.createdAt
+    } = response.data.story);
+
+    // Update the story in the current user's favorites array, if it exists.
+    updateStoryInArray(this, currentUser.favorites);
+
+    // Update the story in the all-stories array, if it exists.
+    updateStoryInArray(this, storyList.stories);
+
+    // No need to update the story in the current user's own-stories array, since this instance is the retrieved story
+    // from own-stories.
+  }
 }
 
 
@@ -278,5 +317,25 @@ class User {
     });
 
     this.favorites = response.data.user.favorites.map(s => new Story(s));
+  }
+}
+
+
+/******************************************************************************
+ * Helper functions
+ */
+
+/**
+ * Finds the story, that was updated, in an array of stories by story ID.  Then replaces the old Story instance with
+ * the updated instance.
+ *
+ * @param {Story} updatedStory The story to replace with
+ * @param {Array} stories An array of stories
+ */
+
+function updateStoryInArray(updatedStory, stories) {
+  const i = stories.findIndex(story => story.storyId === updatedStory.storyId);
+  if (i > -1) {
+    stories[i] = updatedStory;
   }
 }

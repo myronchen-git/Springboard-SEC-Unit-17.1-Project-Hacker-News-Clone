@@ -3,6 +3,9 @@
 // This is the global list of the stories, an instance of StoryList
 let storyList;
 
+// For when editing one of the current user's own story
+let storyToEdit;
+
 /** Get and show stories when site first loads. */
 
 async function getAndShowStoriesOnStart() {
@@ -91,25 +94,34 @@ function putStoriesOnPage(stories, list) {
   list.show();
 }
 
-/** Takes the input values for a new story, submits it to the API, generate the HTML, and add it to the story list. */
+/** Takes the input values for a story and submits it to the API.  If it is a new story, generate the HTML and add it
+ * to the story list.  If it is an existing story, update the stories list in the HTML */
 
 async function submitStory(evt) {
   console.debug("submitStory", evt);
   evt.preventDefault();
 
   // grab the author, title, and url
-  const author = $("#submit-story-author").val();
-  const title = $("#submit-story-title").val();
-  const url = $("#submit-story-url").val();
+  const author = $submitStoryAuthor.val();
+  const title = $submitStoryTitle.val();
+  const url = $submitStoryUrl.val();
 
+  if (!storyToEdit) {
   // StoryList.addStory uses API to add a new story and returns a Story instance
   const newStory = await storyList.addStory(currentUser, { author, title, url });
-
-  $submitForm.hide();
 
   // generate HTML for the new story and add it to the list of stories
   const $story = generateStoryMarkup(newStory);
   $allStoriesList.prepend($story);
+
+  } else {
+    await storyToEdit.updateStory(currentUser, { author, title, url });
+    $(`li[id=${storyToEdit.storyId}]`).replaceWith(generateStoryMarkup(storyToEdit));
+    storyToEdit = undefined;
+  }
+
+  $submitForm.trigger("reset");
+  $submitForm.hide();
 }
 
 $submitForm.submit(submitStory);
@@ -128,3 +140,22 @@ async function deleteStory(evt) {
 }
 
 $storiesList.on("click", ".fa-trash-can", deleteStory);
+
+/** Gets the story ID of the story "li" element that the clicked pencil icon belongs to.  Then finds the Story instance
+ * in the current user's own-stories array; populates the submit form inputs with the current author, title, and URL
+ * values; and shows the form. */
+
+async function editStory(evt) {
+  console.debug("editStory", evt);
+
+  const storyId = evt.currentTarget.closest("li").id;
+
+  storyToEdit = currentUser.ownStories.find(ownStory => ownStory.storyId === storyId);
+  $submitStoryAuthor.val(storyToEdit.author);
+  $submitStoryTitle.val(storyToEdit.title);
+  $submitStoryUrl.val(storyToEdit.url);
+
+  $submitForm.show();
+}
+
+$storiesList.on("click", ".fa-pencil", editStory);

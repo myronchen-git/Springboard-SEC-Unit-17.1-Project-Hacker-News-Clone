@@ -17,6 +17,9 @@ const $navLogOut = $("#nav-logout");
 
 const $navSubmit = $("#nav-submit");
 const $submitForm = $("#submit-form");
+const $submitStoryAuthor = $("#submit-story-author");
+const $submitStoryTitle = $("#submit-story-title");
+const $submitStoryUrl = $("#submit-story-url");
 
 const $navFavorites = $("#nav-favorites");
 const $favoriteStoriesList = $("#favorite-stories-list");
