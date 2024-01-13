@@ -78,7 +78,6 @@ function generateStoryMarkup(story) {
 function putStoriesOnPage(stories, list) {
   console.debug("putStoriesOnPage", stories, list);
 
-  $storiesList.hide();
   list.empty();
 
   if (stories.length === 0) {
@@ -94,8 +93,8 @@ function putStoriesOnPage(stories, list) {
   list.show();
 }
 
-/** Takes the input values for a story and submits it to the API.  If it is a new story, generate the HTML and add it
- * to the story list.  If it is an existing story, update the stories list in the HTML */
+/** Takes the input values for a story and submits it to the API.  If it is a new story, navigate back to the all
+ * stories list.  If it is an existing story, navigate to the own stories list. */
 
 async function submitStory(evt) {
   console.debug("submitStory", evt);
@@ -107,17 +106,13 @@ async function submitStory(evt) {
   const url = $submitStoryUrl.val();
 
   if (!storyToEdit) {
-  // StoryList.addStory uses API to add a new story and returns a Story instance
-  const newStory = await storyList.addStory(currentUser, { author, title, url });
-
-  // generate HTML for the new story and add it to the list of stories
-  const $story = generateStoryMarkup(newStory);
-  $allStoriesList.prepend($story);
+  await storyList.addStory(currentUser, { author, title, url });
+  navAllStories();
 
   } else {
     await storyToEdit.updateStory(currentUser, { author, title, url });
-    $(`li[id=${storyToEdit.storyId}]`).replaceWith(generateStoryMarkup(storyToEdit));
     storyToEdit = undefined;
+    navOwnStories();
   }
 
   $submitForm.trigger("reset");

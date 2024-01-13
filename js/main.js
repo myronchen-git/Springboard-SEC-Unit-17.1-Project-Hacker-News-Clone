@@ -34,8 +34,7 @@ const $ownStoriesList = $("#own-stories-list");
 
 function hidePageComponents() {
   const components = [
-    $allStoriesList,
-    $favoriteStoriesList,
+    $storiesList,
     $submitForm,
     $loginForm,
     $signupForm,
